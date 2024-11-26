@@ -1,6 +1,6 @@
 import React from "react";
 
-export const TextInput = React.memo(({ label, name, value, onChange, disabled=false, required=false, max=99, placeholder="", size=1 }) => {
+export const TextInput = React.memo(({ label, name, value, onChange, error, disabled=false, required=false, max=99, placeholder="", size=1 }) => {
   let classSize = ""
   switch(size){
     case 2:
@@ -27,6 +27,9 @@ export const TextInput = React.memo(({ label, name, value, onChange, disabled=fa
         maxLength={max}
         placeholder={placeholder}
       />
+      {
+        error?.campo === name ? <span className="text-red-500">{error?.mensaje}</span> : <></>
+      }
     </div>
   );
 });

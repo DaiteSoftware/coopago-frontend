@@ -11,6 +11,7 @@ export const RegisterBeneficiary = () => {
   const [reference, setReference] = useState("");
   const [beneficiary, setBeneficiary] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState({})
 
   const handleAccountTypeChange = useCallback((event) => {
     setAccountType(event.target.value);
@@ -44,20 +45,18 @@ export const RegisterBeneficiary = () => {
 
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
-    console.log("Form data", {
-      accountType,
-      id,
-      account,
-      reference,
-      beneficiary,
-      email,
-    });
     executeProcedure(
       "p_registrar_beneficiarios",
       { beneficiario: beneficiary, id_cuenta: account, identificacion: id },
       "dbo"
     )
-      .then((data) => {console.log(data)})
+      .then((resp) => {
+        if(resp?.data?.returnValue < 0){
+          console.log(resp?.data?.recordset[0])
+          let {campo, mensaje} = resp?.data?.recordset[0]
+          setError({campo, mensaje})
+        }
+      })
       .catch((data) => {console.log(data)});
   });
   return (
@@ -90,15 +89,17 @@ export const RegisterBeneficiary = () => {
         onChange={handleIdChange}
         max={14}
         size={2}
+        error={error}
       />
 
       <TextInput
         label="Cuenta *"
-        name="cuenta"
+        name="id_cuenta"
         value={account}
         placeholder="DIGITE EL NUMERO DE CUENTA"
         onChange={handleAccountChange}
         size={2}
+        error={error}
       />
 
       <TextInput
@@ -107,6 +108,7 @@ export const RegisterBeneficiary = () => {
         value={reference}
         onChange={handleReferenceChange}
         size={2}
+        error={error}
       />
 
       <TextInput
@@ -116,6 +118,7 @@ export const RegisterBeneficiary = () => {
         onChange={handleBeneficiaryChange}
         //disabled={true}
         size={2}
+        error={error}
       />
 
       <TextInput
@@ -124,6 +127,7 @@ export const RegisterBeneficiary = () => {
         value={email}
         onChange={handleEmailChange}
         size={2}
+        error={error}
       />
 
       <button
