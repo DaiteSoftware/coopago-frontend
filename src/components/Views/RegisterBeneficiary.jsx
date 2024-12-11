@@ -4,6 +4,7 @@ import { SelectInput } from "../Inputs/SelectInput";
 import { TextInput } from "../Inputs/TextInput";
 import { executeProcedure } from "../../api";
 import { DoneModal } from "../Modals/DoneModal";
+import { FormRegisterWrapper } from "../ui/FormRegisterWrapper";
 
 export const RegisterBeneficiary = () => {
   const [accountType, setAccountType] = useState("");
@@ -14,11 +15,11 @@ export const RegisterBeneficiary = () => {
   const [beneficiary, setBeneficiary] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState({});
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(true);
 
   const closeModal = () => {
-    setIsOpen(false)
-  }
+    setIsOpen(false);
+  };
 
   const handleAccountTypeChange = useCallback((event) => {
     setAccountType(event.target.value);
@@ -71,9 +72,9 @@ export const RegisterBeneficiary = () => {
       });
   });
   return (
-    <div>
+    <FormRegisterWrapper>
       <form
-        className="max-w-sm mx-auto my-auto"
+        className="align-middle w-full max-w-sm"
         onSubmit={handleSubmit}
         autoComplete="off"
       >
@@ -151,7 +152,7 @@ export const RegisterBeneficiary = () => {
           Guardar
         </button>
       </form>
-      <DoneModal isOpen={isOpen} onClose={closeModal}/>
-    </div>
+      <DoneModal isOpen={isOpen} onClose={closeModal} />
+    </FormRegisterWrapper>
   );
 };
