@@ -51,6 +51,26 @@ export const RegisterBeneficiary = () => {
     setEmail(event.target.value);
   }, []);
 
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const form = e.target.form;
+      const index = Array.prototype.indexOf.call(form, e.target);
+      let found = false
+      for (let i = index + 1; i < form.elements.length; i++) { 
+        const element = form.elements[i]
+        if (!element.disabled && element.type !== 'submit') { 
+          form.elements[i].focus(); 
+          found = true
+          break; 
+        }
+      }
+      if(!found){   
+        return handleSubmit(e)
+      }
+    }
+  }, []);
+
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
     executeProcedure(
@@ -76,6 +96,7 @@ export const RegisterBeneficiary = () => {
       <form
         className="align-middle w-full max-w-sm"
         onSubmit={handleSubmit}
+        onKeyDown={handleKeyDown}
         autoComplete="off"
       >
         {/* <SelectInput
@@ -123,6 +144,7 @@ export const RegisterBeneficiary = () => {
           value={reference}
           onChange={handleReferenceChange}
           size={2}
+          disabled={true}
           error={error}
         />
 
